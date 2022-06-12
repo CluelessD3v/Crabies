@@ -83,78 +83,76 @@ FSM.ExitBuffer("HappyToSad")
 
 print(FSM.DebugText())
 
---[[ Output:
+-- Entities {
+--     [1] = 1,
+--     [2] = 2,
+--     [3] = 3,
+--     [4] = 4
+-- } entering Happy
 
-Entities {
-    [1] = 1,
-    [2] = 2,
-    [3] = 3,
-    [4] = 4
-} entering Happy
+-- Entities {
+--     [1] = 2,
+--     [2] = 3
+-- } entering Angry
 
-Entities {
-    [1] = 2,
-    [2] = 3
-} entering Angry
+-- Entities {
+--     [1] = 1,
+--     [2] = 3
+-- } entering Disgusted
 
-Entities {
-    [1] = 1,
-    [2] = 3
-} entering Disgusted
+-- Entities {
+--     [1] = 2,
+--     [2] = 4
+-- } entering Afraid
 
-Entities {
-    [1] = 2,
-    [2] = 4
-} entering Afraid
+-- Entities {
+--     [1] = 3
+-- } entering Sad
 
-Entities {
-    [1] = 3
-} entering Sad
+-- Entities {
+--     [1] = 1,
+--     [2] = 4
+-- } exiting Happy
 
-Entities {
-    [1] = 1,
-    [2] = 4
-} exiting Happy
+-- Entity 2 is entering Buffer HappyToSad
 
-Entity 2 is entering Buffer HappyToSad
+-- Buffer HappyToSad {
+--     [1] = 2
+-- } is clearing
 
-Buffer HappyToSad {
-    [1] = 2
-} is clearing
+-- Entities {
+--     [1] = 2
+-- } exiting Afraid
 
-Entities {
-    [1] = 2
-} exiting Afraid
+-- Entities {
+--     [1] = 2
+-- } exiting Happy
 
-Entities {
-    [1] = 2
-} exiting Happy
+-- Entities {
+--     [1] = 2
+-- } exiting Angry
 
-Entities {
-    [1] = 2
-} exiting Angry
+-- Entities {
+--     [1] = 2
+-- } entering Sad
 
-Entities {
-    [1] = 2
-} entering Sad
+-- Entities {
+--     [1] = 2
+-- } entering Angry
 
-Entities {
-    [1] = 2
-} entering Angry
+-- FINITE STATE MACHINE DEBUG TEXT:
 
-FINITE STATE MACHINE DEBUG TEXT:
+-- State Disgusted: { 1, 3 }
+-- State Afraid: { 4 }
+-- State Sad: { 3, 2 }
+-- State Happy: { 3 }
+-- State Angry: { 3, 2 }
 
-State Disgusted: { 1, 3 }
-State Afraid: { 4 }
-State Sad: { 3, 2 }
-State Happy: { 3 }
-State Angry: { 3, 2 }
-
-Transition HappyToSad: {
-	Buffer: {  }
-	FromOr: { "Disgusted", "Afraid", "Happy" }
-	FromAnd: { "Happy", "Angry" }
-	FromNot: { "Sad" }
-	To: { "Sad", "Angry" }
-}
-]]
+-- Transition HappyToSad: {
+-- 	Buffer: {  }
+-- 	FromOr: { "Disgusted", "Afraid", "Happy" }
+-- 	FromAnd: { "Happy", "Angry" }
+-- 	FromNot: { "Sad" }
+-- 	To: { "Sad", "Angry" }
+-- }
+-- ]]

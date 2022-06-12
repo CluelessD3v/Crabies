@@ -25,7 +25,7 @@ local Entities = {
 }
 
 --Initialize the entity states
-Cracker.EnterStates({ "Guarding" }, { Entities.Romeo })
+Crakcer.EnterStates({ "Guarding" }, { Entities.Romeo })
 Cracker.EnterStates({ "Patrolling" }, { Entities.Juliette })
 Cracker.EnterStates({ "Guarding", "Slacking" }, { Entities.BillyBobJimNoodleMan })
 ```
