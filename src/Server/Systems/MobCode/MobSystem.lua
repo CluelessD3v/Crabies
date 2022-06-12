@@ -9,7 +9,6 @@ local Cracker = require(ServerScriptService.Cracker)
 local MobSystem = {}
 
 --!= PUBLIC MEMBERS ===============|>
-
 --* Tables
 MobSystem.Mobs        = {}
 MobSystem.MobStates   = {}
