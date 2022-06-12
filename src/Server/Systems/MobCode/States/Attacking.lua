@@ -1,3 +1,8 @@
+--== <|=============== SERVICES ===============|>
+local PathfindingService = game:GetService("PathfindingService")
+
+
+--== <|=============== ATTACKING STATE ===============|>
 local Attacking = {}
 
 Attacking.Name = "Happy"
@@ -13,7 +18,6 @@ Attacking.OnExitState = function(entities)
     for _, entity in ipairs(entities) do
         print(entity, "Exited Attacking")
     end
-    
 end
 
 return Attacking

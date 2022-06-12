@@ -23,6 +23,13 @@ Rinse and repeat
 
 ## Game Elements
 
+Zombie behavior
+- Spawns
+- Makes its way to a target
+- once it's near a target it will attempt to attack it
+
+Zombie only chases valid targets, probably within a certain radius as well.
+
 
 
 
