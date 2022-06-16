@@ -61,15 +61,22 @@ end
 Module.EnterStates = function(StateNames, Entities)
 	for _, StateName in ipairs(StateNames) do
 		local State = Module.GetState(StateName)
-		if not State then State = Module.CreateState(StateName) end
+		if not State then State = Module.CreateState(StateName, {}) end
 
 		local EntitiesNotInState = {}
+		
+		--## Check if the entity is in the collection
+		--## If it is not then insert it into the collection.
 		for _, Entity in ipairs(Entities) do
+
 			if State.Collection[Entity] then continue end
+			
+			print("passed")
 			table.insert(EntitiesNotInState, Entity)
 		end
 
 		if #EntitiesNotInState == 0 then continue end
+
 		if State.OnEnterState(EntitiesNotInState) then continue end
 
 		for _, Entity in ipairs(EntitiesNotInState) do
@@ -82,7 +89,7 @@ Module.ExitStates = function(StateNames, Entities)
 	for _, StateName in ipairs(StateNames) do
 		local State = Module.GetState(StateName)
 		if not State then continue end
-
+		
 		local EntitiesInState = {}
 		for _, Entity in ipairs(Entities) do
 			if not State.Collection[Entity] then continue end
@@ -98,14 +105,30 @@ Module.ExitStates = function(StateNames, Entities)
 	end
 end
 
+Module.ExitAllStates = function(Entities)
+	local StateNames = {}
+	for StateName in pairs(States) do
+		table.insert(StateNames, StateName)
+	end
+
+	Module.ExitStates(StateNames, Entities)
+end
+
+Module.IsInState = function(StateName, Entity)
+	local State = Module.GetState(StateName)
+	if not State then return false end
+
+	return State.Collection[Entity]
+end
+
 Module.EnterBuffer = function(TransitionName, Entities)
 	local Transition = Module.GetTransition(TransitionName)
-
+	
 	for _, Entity in ipairs(Entities) do
 		local ValidOr = #Transition.FromOr == 0
 		for _, SourceName in ipairs(Transition.FromOr) do
 			local SourceState = Module.GetState(SourceName)
-			if not SourceState then SourceState = Module.CreateState(SourceName) end
+			if not SourceState then SourceState = Module.CreateState(SourceName, {}) end
 			if not SourceState.Collection[Entity] then continue end
 
 			ValidOr = true
@@ -115,7 +138,7 @@ Module.EnterBuffer = function(TransitionName, Entities)
 		local ValidAnd = true
 		for _, SourceName in ipairs(Transition.FromAnd) do
 			local SourceState = Module.GetState(SourceName)
-			if not SourceState then SourceState = Module.CreateState(SourceName) end
+			if not SourceState then SourceState = Module.CreateState(SourceName, {}) end
 			if SourceState.Collection[Entity] then continue end
 
 			ValidAnd = false
@@ -125,13 +148,13 @@ Module.EnterBuffer = function(TransitionName, Entities)
 		local ValidNot = true
 		for _, SourceName in ipairs(Transition.FromNot) do
 			local SourceState = Module.GetState(SourceName)
-			if not SourceState then SourceState = Module.CreateState(SourceName) end
+			if not SourceState then SourceState = Module.CreateState(SourceName, {}) end
 			if not SourceState.Collection[Entity] then continue end
 
 			ValidNot = false
 			break
 		end
-
+		
 		if not ValidOr or not ValidAnd or not ValidNot then continue end
 		if Transition.OnEnterBuffer(Entity) then continue end
 
@@ -145,13 +168,20 @@ Module.ExitBuffer = function(TransitionName)
 
 	Module.ExitStates(Transition.FromOr, Transition.Buffer)
 	Module.ExitStates(Transition.FromAnd, Transition.Buffer)
-	Module.ExitStates(Transition.FromNot, Transition.Buffer)
 	Module.EnterStates(Transition.To, Transition.Buffer)
 
 	table.clear(Transition.Buffer)
 end
 
 Module.PassBuffer = function(TransitionName, Entities)
+	local Transition = Module.GetTransition(TransitionName)
+
+	Module.ExitStates(Transition.FromOr, Entities)
+	Module.ExitStates(Transition.FromAnd, Entities)
+	Module.EnterStates(Transition.To, Entities)
+end
+
+Module.ThroughBuffer = function(TransitionName, Entities)
 	Module.EnterBuffer(TransitionName, Entities)
 	Module.ExitBuffer(TransitionName)
 end
@@ -175,7 +205,7 @@ local function TableToString(Table)
 			Result ..= Value
 
 		else
-			Result ..= "\"" .. Value .. "\""
+			Result ..= "\"" .. tostring(Value) .. "\""
 		end
 
 		Result ..= ", "

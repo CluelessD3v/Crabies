@@ -1,8 +1,8 @@
 local AttackingTransition = {}
 
 --* Transition Data
-AttackingTransition.FromAnd = {"Attacking"}
-AttackingTransition.To      = {"Chasing"}
+AttackingTransition.FromOr = {"Chasing"}
+AttackingTransition.To      = {"Attacking"}
 
 --* Transition Functions
 AttackingTransition.OnEnterBuffer = function(entities)

@@ -27,6 +27,7 @@ Zombie behavior
 - Spawns
 - Makes its way to a target
 - once it's near a target it will attempt to attack it
+- if for some reason there is no target they'll just sit idle waiting for a target to appear
 
 Zombie only chases valid targets, probably within a certain radius as well.
 

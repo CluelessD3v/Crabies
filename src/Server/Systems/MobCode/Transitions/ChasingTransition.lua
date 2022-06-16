@@ -1,11 +1,12 @@
 local ChasingTransition = {}
 
 --* Transition Data
-ChasingTransition.FromAnd = {"Chasing"}
-ChasingTransition.To      = {"Attacking"}
+ChasingTransition.FromOr = {"Attacking"}
+ChasingTransition.To      = {"Chasing"}
 
 --* Transition Functions
 ChasingTransition.OnEnterBuffer = function(entities)
+    print("EnterBuffer Called")
     for _, entity in ipairs(entities) do
         print(entity, "Entered Chasing buffer")
     end
